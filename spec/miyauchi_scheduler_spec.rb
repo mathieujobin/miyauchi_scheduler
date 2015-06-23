@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe MiyauchiScheduler do
@@ -100,5 +102,11 @@ describe MiyauchiScheduler do
     expect(subject.print).to be nil
   end
 
+  it 'should support japanese' do
+    o = MiyauchiScheduler.new
+    o.set_workers ["宮内一美", "宮内琉嘉", "宮内美保子", "Mathieu Jobin"]
+    o.generate_calendar
+    o.print
+  end
 end
 
