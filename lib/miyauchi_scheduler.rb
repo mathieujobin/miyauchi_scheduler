@@ -62,6 +62,20 @@ class MiyauchiScheduler
     @workers ||= available_workers.times.map { |x| "worker #{x+1}" }
   end
 
+  def print
+    puts "================= per workers ====================="
+    workers.each do |worker|
+      puts "Worker: #{worker}"
+      puts "Working on: #{working_schedule.days_for(worker).join(', ')}"
+      puts "OFF on: #{days_off.days_for(worker)}"
+    end
+    puts "================= per days ====================="
+    days.times do |d|
+      puts "#{d+1}: #{working_schedule.worker_on(d+1).join(', ')}"
+    end
+    nil
+  end
+
   private
 
   attr_reader :params
