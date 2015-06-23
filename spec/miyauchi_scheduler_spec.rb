@@ -56,7 +56,7 @@ describe MiyauchiScheduler do
           expect(actual_sum).not_to eq continuous_sum
         end
       end
-    ends
+    end
   end
 
   it 'each worker should not work more than (31 - 8) days' do
