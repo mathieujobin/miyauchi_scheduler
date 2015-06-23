@@ -17,7 +17,7 @@ describe MiyauchiScheduler do
   end
 
   it 'should be able to return a list of workers' do
-    expect(subject.workers).to eq([])
+    expect(subject.workers).to eq(["worker 1", "worker 2", "worker 3", "worker 4"])
   end
 
   it 'each day should have two different workers' do
@@ -31,7 +31,7 @@ describe MiyauchiScheduler do
     work_cal = subject.generate_calendar
     off_cal = subject.days_off
     subject.workers do |worker|
-      expect(off_cal.days_for(worker).size).to eq(8) # be >= 8
+      expect(off_cal.days_for(worker).size).to eq(9) # be >= 8
     end
   end
 
@@ -43,25 +43,29 @@ describe MiyauchiScheduler do
     end
   end
 
-  it 'each worker should not work more than 5 days in a row' do
-    cal = subject.generate_calendar
-    subject.workers.each do |worker|
-      days = cal.days_for(worker)
-      (days.size - 1).times do |i|
-        # x0 .. x4 + 1,2,3,4 = sum of continuous numbers.
-        continuous_sum = days[i] * 5 + 10
-        actual_sum = days[i..(i+5)].inject(0) { |t, x| t += x }
-        # if they are sorted and there is no duplicates, it can't possibly be the same for a non-continuous series.
-        expect(actual_sum).to be != continuous_sum
+  it 'each worker should not work more than 5 days in a row (100 times)' do
+    100.times do
+      cal = subject.generate_calendar
+      subject.workers.each do |worker|
+        days = cal.days_for(worker)
+        (days.size - 1).times do |i|
+          # x0 .. x4 + 1,2,3,4 = sum of continuous numbers.
+          continuous_sum = days[i] * 5 + 10
+          actual_sum = days[i..(i+5)].inject(0) { |t, x| t += x }
+          # if they are sorted and there is no duplicates, it can't possibly be the same for a non-continuous series.
+          expect(actual_sum).not_to eq continuous_sum
+        end
       end
-    end
+    ends
   end
 
   it 'each worker should not work more than (31 - 8) days' do
-    work_cal = subject.generate_calendar
-    subject.workers do |worker|
-      days = work_cal.days_for(worker)
-      expect(days.size).to eq(23) # be <= 23
+    100.times do
+      work_cal = subject.generate_calendar
+      subject.workers.each do |worker|
+        days = work_cal.days_for(worker)
+        expect(days.size).to be <= 22
+      end
     end
   end
 
