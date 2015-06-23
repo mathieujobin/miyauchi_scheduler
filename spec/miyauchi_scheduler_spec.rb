@@ -16,6 +16,29 @@ describe MiyauchiScheduler do
     end
   end
 
+  it 'should be able to set a list of workers with different maximum working days' do
+    subject.add_worker "Hito 1", 22
+    subject.add_worker "Hito 2", 22
+    subject.add_worker "Hito 3", 13
+    subject.add_worker "Hito 4", 13
+    expect(subject.workers).to eq(["Hito 1", "Hito 2", "Hito 3", "Hito 4"])
+  end
+
+  context 'when setting workers with different amount of working days' do
+    it 'should not schedule them for more than expected' do
+      subject.add_worker "Hito 1", 22
+      subject.add_worker "Hito 2", 22
+      subject.add_worker "Hito 3", 13
+      subject.add_worker "Hito 4", 13
+      cal = subject.generate_calendar
+      expect(work_cal.days_for("Hito 1").size).to be <= 22
+      expect(work_cal.days_for("Hito 2").size).to be <= 22
+      expect(work_cal.days_for("Hito 3").size).to be <= 13
+      expect(work_cal.days_for("Hito 4").size).to be <= 13
+      subject.print
+    end
+  end
+
   it 'should be able to return a list of workers' do
     expect(subject.workers).to eq(["worker 1", "worker 2", "worker 3", "worker 4"])
   end
