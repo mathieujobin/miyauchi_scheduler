@@ -51,11 +51,20 @@ class MiyauchiScheduler
     generate_or_setup_days_off
     days.times do |d|
       while working_schedule.worker_on(d+1).size < worker_per_day
-        working_schedule.add_worker(random_worker, d+1)
+        name = random_worker
+        unless has_no_more_working_days(name)
+          working_schedule.add_worker(name, d+1)
+        end
       end
     end
     working_schedule
   end
+
+  def add_worker(name, maxdays)
+    @workers ||= []
+    @maxdays ||= {}
+    @workers << name
+    @maxdays[name] = maxdays
   end
 
   def workers
@@ -65,8 +74,8 @@ class MiyauchiScheduler
   def print
     puts "================= per workers ====================="
     workers.each do |worker|
-      puts "Worker: #{worker}"
-      puts "Working on: #{working_schedule.days_for(worker).join(', ')}"
+      puts "Worker: #{worker} (Total working days: #{working_days_for(worker).size})"
+      puts "Working on: #{working_days_for(worker).join(', ')}"
       puts "OFF on: #{days_off.days_for(worker)}"
     end
     puts "================= per days ====================="
@@ -86,6 +95,18 @@ class MiyauchiScheduler
 
   def random_worker
     workers[(rand * available_workers).to_i]
+  end
+
+  def has_no_more_working_days(worker)
+    working_days_for(worker).size >= max_days_for(worker)
+  end
+
+  def max_days_for(worker)
+    @maxdays[worker]
+  end
+
+  def working_days_for(worker)
+    working_schedule.days_for(worker)
   end
 
   def worker_per_day

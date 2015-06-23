@@ -30,7 +30,7 @@ describe MiyauchiScheduler do
       subject.add_worker "Hito 2", 22
       subject.add_worker "Hito 3", 13
       subject.add_worker "Hito 4", 13
-      cal = subject.generate_calendar
+      work_cal = subject.generate_calendar
       expect(work_cal.days_for("Hito 1").size).to be <= 22
       expect(work_cal.days_for("Hito 2").size).to be <= 22
       expect(work_cal.days_for("Hito 3").size).to be <= 13
