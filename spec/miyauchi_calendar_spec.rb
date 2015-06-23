@@ -1,7 +1,20 @@
 require 'spec_helper'
 
 describe MiyauchiCalendar do
+  subject do
+    MiyauchiCalendar.new(31, ['worker_1', 'worker_2'])
+  end
+
+  it 'requires an argument' do
+    expect{MiyauchiCalendar.new}.to raise_error(ArgumentError)
+  end
+
+  it 'by default, it creates a hash of days with empty worker arrays' do
+    expect(MiyauchiCalendar.new(2).days).to eq({1=>[], 2=>[]})
+  end
+
   it 'can return the list of days for a worker' do
+    worker = 'worker_1'
     expect(subject.days_for(worker)).to eq([1,2,3])
   end
 
@@ -11,7 +24,49 @@ describe MiyauchiCalendar do
     )
   end
 
+  ### worker_on
+
   it 'can return the worker for a specific date' do
     expect(subject.worker_on(10)).to eq(["worker_1", "worker_2"])
   end
+
+  ### add_worker
+
+  it 'should allow to set the workers for a specifc date' do
+    subject.add_worker('worker_3', 26)
+    expect(subject.worker_on(26)).to eq(["worker_1", "worker_2", 'worker_3'])
+  end
+
+  it 'should not add a worker twice' do
+    subject.add_worker('worker_2', 26)
+    expect(subject.worker_on(26)).to eq(["worker_1", "worker_2"])
+  end
+
+  it 'should allow to add a worker to all days' do
+    subject.add_worker('foo')
+    31.times do |d|
+      expect(subject.worker_on(d+1)).to eq(["worker_1", "worker_2", 'foo'])
+    end
+  end
+
+  ### remove_worker
+
+  it 'should allow to add a worker for a specific date' do
+    subject.remove_worker('worker_1', 13)
+    31.times do |d|
+      if d == 12
+        expect(subject.worker_on(d+1)).to eq(["worker_2", 'y'])
+      else
+        expect(subject.worker_on(d+1)).to eq(["worker_1", "worker_2", 'x'])
+      end
+    end
+  end
+
+  it 'should allow to remove a worker from all days' do
+    subject.remove_worker('worker_1')
+    31.times do |d|
+      expect(subject.worker_on(d+1)).to eq(["worker_2"])
+    end
+  end
+
 end
