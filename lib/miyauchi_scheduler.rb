@@ -39,16 +39,16 @@ class MiyauchiScheduler
     @working_schedule
   end
 
-private
+  def workers
+    @workers ||= available_workers.times.map { |x| "worker #{x+1}" }
+  end
+
+  private
 
   attr_reader :params
 
   def days
     DaysPerMonth[current_month]
-  end
-
-  def workers
-    @workers ||= available_workers.times.map { |x| "worker #{x+1}" }
   end
 
   def random_worker
