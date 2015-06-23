@@ -13,9 +13,21 @@ describe MiyauchiCalendar do
     expect(MiyauchiCalendar.new(2).days).to eq({1=>[], 2=>[]})
   end
 
-  it 'can return the list of days for a worker' do
+  it 'can return the list of days for a worker (by default, all)' do
     worker = 'worker_1'
-    expect(subject.days_for(worker)).to eq([1,2,3])
+    expect(subject.days_for(worker)).to eq([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31])
+  end
+
+  it 'can return the list of days for a worker (specific)' do
+    worker = 'worker_1'
+    cal = MiyauchiCalendar.new(34, ['xyz'])
+    cal.add_worker(worker, 6)
+    cal.add_worker(worker, 12)
+    cal.add_worker(worker, 18)
+    cal.add_worker(worker, 25)
+    cal.add_worker(worker, 31)
+    puts cal.days
+    expect(cal.days_for(worker)).to eq([6, 12, 18, 25, 31])
   end
 
   it 'can return all days with workers' do
@@ -37,6 +49,18 @@ describe MiyauchiCalendar do
     expect(subject.worker_on(26)).to eq(["worker_1", "worker_2", 'worker_3'])
   end
 
+  it 'when adding for a specifc date, it should not add to other days' do
+    subject.add_worker('worker_3', 26)
+    31.times do |d|
+      if d == 25
+        expect(subject.worker_on(26)).to eq(["worker_1", "worker_2", 'worker_3'])
+      else
+        puts d
+        expect(subject.worker_on(d+1)).to eq(["worker_1", "worker_2"])
+      end
+    end
+  end
+
   it 'should not add a worker twice' do
     subject.add_worker('worker_2', 26)
     expect(subject.worker_on(26)).to eq(["worker_1", "worker_2"])
@@ -51,7 +75,7 @@ describe MiyauchiCalendar do
 
   ### remove_worker
 
-  it 'should allow to add a worker for a specific date' do
+  it 'should allow to remove a worker for a specific date' do
     subject.remove_worker('worker_1', 13)
     31.times do |d|
       if d == 12
