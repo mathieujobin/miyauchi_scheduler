@@ -27,11 +27,13 @@ describe MiyauchiScheduler do
     end
   end
 
-  it 'each worker should have at least 8 days off (by default)' do
-    work_cal = subject.generate_calendar
-    off_cal = subject.days_off
-    subject.workers do |worker|
-      expect(off_cal.days_for(worker).size).to eq(9) # be >= 8
+  2.times do
+    it 'each worker should have at least 8 days off (by default) (100 times)' do
+      work_cal = subject.generate_calendar
+      off_cal = subject.days_off
+      subject.workers.each do |worker|
+        expect(off_cal.days_for(worker).size).to be >= 8
+      end
     end
   end
 
@@ -43,8 +45,8 @@ describe MiyauchiScheduler do
     end
   end
 
-  it 'each worker should not work more than 5 days in a row (100 times)' do
-    100.times do
+  10.times do
+    it 'each worker should not work more than 5 days in a row (100 times)' do
       cal = subject.generate_calendar
       subject.workers.each do |worker|
         days = cal.days_for(worker)
@@ -59,8 +61,8 @@ describe MiyauchiScheduler do
     end
   end
 
-  it 'each worker should not work more than (31 - 8) days' do
-    100.times do
+  10.times do
+    it 'each worker should not work more than (31 - 8) days (100 times)' do
       work_cal = subject.generate_calendar
       subject.workers.each do |worker|
         days = work_cal.days_for(worker)

@@ -18,6 +18,8 @@ DaysPerMonth = {
 
 class MiyauchiScheduler
 
+  attr_reader :days_off
+
   def initialize(params={})
     # setting defaults for Otousan
     params[:worker_per_day]     ||= 2
