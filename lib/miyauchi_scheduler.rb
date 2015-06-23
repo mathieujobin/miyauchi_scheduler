@@ -33,10 +33,7 @@ class MiyauchiScheduler
   def generate_calendar
     days.times do |d|
       while @working_schedule.worker_on(d+1).size < worker_per_day
-        w = random_worker
-        #unless @working_schedule.worker_on(d+1).include? w
-          @working_schedule.add_worker(w, d+1)
-        #end
+        @working_schedule.add_worker(random_worker, d+1)
       end
     end
     @working_schedule
