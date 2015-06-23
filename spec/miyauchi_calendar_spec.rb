@@ -26,7 +26,6 @@ describe MiyauchiCalendar do
     cal.add_worker(worker, 18)
     cal.add_worker(worker, 25)
     cal.add_worker(worker, 31)
-    puts cal.days
     expect(cal.days_for(worker)).to eq([6, 12, 18, 25, 31])
   end
 
@@ -55,7 +54,6 @@ describe MiyauchiCalendar do
       if d == 25
         expect(subject.worker_on(26)).to eq(["worker_1", "worker_2", 'worker_3'])
       else
-        puts d
         expect(subject.worker_on(d+1)).to eq(["worker_1", "worker_2"])
       end
     end

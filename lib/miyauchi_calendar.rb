@@ -1,7 +1,7 @@
 class MiyauchiCalendar
   def initialize(number_of_days, default_workers=[])
     @number_of_days = number_of_days
-    @data = number_of_days.times.inject({}) {|t,x| t[x+1] = default_workers; t }
+    @data = number_of_days.times.inject({}) {|t,x| t[x+1] = default_workers.dup; t }
   end
 
   def days
