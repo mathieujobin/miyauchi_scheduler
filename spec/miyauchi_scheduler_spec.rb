@@ -5,7 +5,14 @@ describe MiyauchiScheduler do
     expect(MiyauchiScheduler::VERSION).not_to be nil
   end
 
-  it 'does something useful' do
-    expect(false).to eq(true)
+  it 'does generate a calendar' do
+    expect(subject.new.generate_calendar).to eq(MiyauchiCalendar)
+  end
+
+  it 'each days should have two workers by default' do
+    cal = subject.new.generate_calendar
+    cal.days.each do |workers|
+      expect(workers.size).to eq(2)
+    end
   end
 end
