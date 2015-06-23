@@ -18,7 +18,7 @@ DaysPerMonth = {
 
 class MiyauchiScheduler
 
-  attr_reader :days_off
+  attr_reader :days_off, :working_schedule
 
   def initialize(params={})
     # setting defaults for Otousan
@@ -29,16 +29,33 @@ class MiyauchiScheduler
     params[:current_month]      ||= current_month
     @params = params
     @working_schedule = MiyauchiCalendar.new(days)
+    reset_days_off
+  end
+
+  def reset_days_off
     @days_off = MiyauchiCalendar.new(days)
   end
 
-  def generate_calendar
-    days.times do |d|
-      while @working_schedule.worker_on(d+1).size < worker_per_day
-        @working_schedule.add_worker(random_worker, d+1)
+  def generate_or_setup_days_off
+    workers.each do |worker|
+      while days_off.days_for(worker).size < days_off_per_month
+        day = (rand * days).to_i + 1
+        if worker_per_day <= (available_workers - days_off.worker_on(day).size)
+          days_off.add_worker(worker, day)
+        end
       end
     end
-    @working_schedule
+  end
+
+  def generate_calendar
+    generate_or_setup_days_off
+    days.times do |d|
+      while working_schedule.worker_on(d+1).size < worker_per_day
+        working_schedule.add_worker(random_worker, d+1)
+      end
+    end
+    working_schedule
+  end
   end
 
   def workers
