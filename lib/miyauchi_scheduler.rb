@@ -1,5 +1,13 @@
 require "miyauchi_scheduler/version"
+require "miyauchi_calendar"
 
-module MiyauchiScheduler
-  # Your code goes here...
+
+class MiyauchiScheduler
+  def initialize(params={})
+  end
+
+  def generate_calendar
+    MiyauchiCalendar.new
+  end
+
 end
