@@ -55,9 +55,9 @@ describe MiyauchiCalendar do
     subject.remove_worker('worker_1', 13)
     31.times do |d|
       if d == 12
-        expect(subject.worker_on(d+1)).to eq(["worker_2", 'y'])
+        expect(subject.worker_on(d+1)).to eq(["worker_2"])
       else
-        expect(subject.worker_on(d+1)).to eq(["worker_1", "worker_2", 'x'])
+        expect(subject.worker_on(d+1)).to eq(["worker_1", "worker_2"])
       end
     end
   end
