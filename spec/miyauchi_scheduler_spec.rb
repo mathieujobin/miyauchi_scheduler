@@ -94,5 +94,10 @@ describe MiyauchiScheduler do
     end
   end
 
+  it 'should be able to print the schedule' do
+    work_cal = subject.generate_calendar
+    expect(subject.print).to be nil
+  end
+
 end
 
