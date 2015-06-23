@@ -26,6 +26,7 @@ class MiyauchiScheduler
     params[:available_workers]  ||= 4
     params[:days_off_per_month] ||= 8
     params[:days_off_per_year]  ||= 19
+    params[:current_year]       ||= current_year
     params[:current_month]      ||= current_month
     @params = params
     @working_schedule = MiyauchiCalendar.new(days)
@@ -71,6 +72,16 @@ class MiyauchiScheduler
     @workers ||= available_workers.times.map { |x| "worker #{x+1}" }
   end
 
+  def format_calendar offset, month_length
+    [
+      * %w{Mon Tue Wed Thu Fri Sat Sun},
+      * Array.new(offset),
+      * (1..month_length),
+    ].each_slice(7).map{ |week|
+      week.map{ |date| "%3s" % date }.join " "
+    }
+  end
+
   def print
     puts "================= per workers ====================="
     workers.each do |worker|
@@ -82,12 +93,17 @@ class MiyauchiScheduler
     days.times do |d|
       puts "#{d+1}: #{working_schedule.worker_on(d+1).join(', ')}"
     end
+    puts format_calendar first_day_of_month, days
     nil
   end
 
   private
 
   attr_reader :params
+
+  def first_day_of_month
+    Time.local(current_year, current_month, 1).day
+  end
 
   def days
     DaysPerMonth[current_month]
@@ -123,6 +139,10 @@ class MiyauchiScheduler
 
   def days_off_per_year
     params[:days_off_per_year]
+  end
+
+  def current_year
+    Time.now.strftime('%Y').to_i
   end
 
   def current_month
