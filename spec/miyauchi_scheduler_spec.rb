@@ -52,7 +52,7 @@ describe MiyauchiScheduler do
     end
   end
 
-  2.times do
+  100.times do
     it 'each worker should have at least 8 days off (by default) (100 times)' do
       work_cal = subject.generate_calendar
       off_cal = subject.days_off
@@ -90,7 +90,7 @@ describe MiyauchiScheduler do
     end
   end
 
-  10.times do
+  100.times do
     it 'each worker should not work more than (31 - 8) days (100 times)' do
       work_cal = subject.generate_calendar
       subject.workers.each do |worker|
