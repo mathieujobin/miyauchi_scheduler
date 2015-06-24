@@ -37,7 +37,7 @@ describe MiyauchiScheduler do
       expect(work_cal.days_for("Hito 2").size).to be <= 22
       expect(work_cal.days_for("Hito 3").size).to be <= 13
       expect(work_cal.days_for("Hito 4").size).to be <= 13
-      subject.print
+      subject.print if ENV['DEBUG']
     end
   end
 
@@ -109,7 +109,7 @@ describe MiyauchiScheduler do
     o = MiyauchiScheduler.new
     o.set_workers ["宮内一美", "宮内琉嘉", "宮内美保子", "Mathieu Jobin"]
     o.generate_calendar
-    o.print
+    o.print if ENV['DEBUG']
   end
 
   it 'should be able to find the first day of the month properly' do
@@ -152,7 +152,7 @@ describe MiyauchiScheduler do
     o.generate_calendar
     expect(o.send(:days)).to eq 31
     expect(o.send(:first_day_of_month)).to eq 2
-    o.print
+    o.print if ENV['DEBUG']
   end
 
 end
