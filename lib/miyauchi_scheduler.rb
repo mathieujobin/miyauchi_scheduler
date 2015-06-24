@@ -50,8 +50,9 @@ class MiyauchiScheduler
   def generate_calendar
     generate_or_setup_days_off
     days.times do |d|
+      random_workers = workers.shuffle
       while working_schedule.worker_on(d+1).size < worker_per_day
-        name = random_worker
+        name = random_workers.pop
         unless has_no_more_working_days(name)
           working_schedule.add_worker(name, d+1)
         end
@@ -114,6 +115,7 @@ class MiyauchiScheduler
   end
 
   def random_worker
+    raise 'deprecated'
     workers[(rand * available_workers).to_i]
   end
 

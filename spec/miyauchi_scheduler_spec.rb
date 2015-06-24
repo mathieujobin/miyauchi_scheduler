@@ -27,17 +27,19 @@ describe MiyauchiScheduler do
   end
 
   context 'when setting workers with different amount of working days' do
-    it 'should not schedule them for more than expected' do
-      subject.add_worker "Hito 1", 22
-      subject.add_worker "Hito 2", 22
-      subject.add_worker "Hito 3", 13
-      subject.add_worker "Hito 4", 13
-      work_cal = subject.generate_calendar
-      expect(work_cal.days_for("Hito 1").size).to be <= 22
-      expect(work_cal.days_for("Hito 2").size).to be <= 22
-      expect(work_cal.days_for("Hito 3").size).to be <= 13
-      expect(work_cal.days_for("Hito 4").size).to be <= 13
-      subject.print if ENV['DEBUG']
+    100.times do
+      it 'should not schedule them for more than expected (100 times)' do
+        subject.add_worker "Hito 1", 20
+        subject.add_worker "Hito 2", 20
+        subject.add_worker "Hito 3", 11
+        subject.add_worker "Hito 4", 11
+        work_cal = subject.generate_calendar
+        expect(work_cal.days_for("Hito 1").size).to be <= 20
+        expect(work_cal.days_for("Hito 2").size).to be <= 20
+        expect(work_cal.days_for("Hito 3").size).to be <= 11
+        expect(work_cal.days_for("Hito 4").size).to be <= 11
+        subject.print if ENV['DEBUG']
+      end
     end
   end
 
