@@ -122,7 +122,7 @@ class MiyauchiScheduler
   end
 
   def max_days_for(worker)
-    @maxdays[worker] || days
+    @maxdays[worker] || (days-days_off_per_month)
   end
 
   def working_days_for(worker)
