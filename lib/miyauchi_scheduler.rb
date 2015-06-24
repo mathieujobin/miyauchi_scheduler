@@ -31,6 +31,7 @@ class MiyauchiScheduler
     @params = params
     @working_schedule = MiyauchiCalendar.new(days)
     reset_days_off
+    @maxdays ||= {}
   end
 
   def reset_days_off
@@ -63,9 +64,12 @@ class MiyauchiScheduler
 
   def add_worker(name, maxdays)
     @workers ||= []
-    @maxdays ||= {}
     @workers << name
     @maxdays[name] = maxdays
+  end
+
+  def set_workers(list)
+    @workers = list
   end
 
   def workers
@@ -118,7 +122,7 @@ class MiyauchiScheduler
   end
 
   def max_days_for(worker)
-    @maxdays[worker]
+    @maxdays[worker] || days
   end
 
   def working_days_for(worker)
