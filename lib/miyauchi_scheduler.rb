@@ -74,28 +74,30 @@ class MiyauchiScheduler
     @workers ||= available_workers.times.map { |x| "worker #{x+1}" }
   end
 
-  def format_calendar offset, month_length
+  def format_calendar(offset, month_length, days=nil)
+    days ||= (1..month_length)
+
     [
       * %w{Mon Tue Wed Thu Fri Sat Sun},
       * Array.new(offset),
-      * (1..month_length),
+      * days,
     ].each_slice(7).map{ |week|
       week.map{ |date| "%3s" % date }.join " "
     }
   end
 
   def print
-    puts "================= per workers ====================="
     workers.each do |worker|
+      puts "================= Schedule ====================="
       puts "Worker: #{worker} (Total working days: #{working_days_for(worker).size})"
       puts "Working on: #{working_days_for(worker).join(', ')}"
       puts "OFF on: #{days_off.days_for(worker)}"
+      puts format_calendar first_day_of_month, days, working_days_with_spaces_for(worker)
     end
     puts "================= per days ====================="
     days.times do |d|
       puts "#{d+1}: #{working_schedule.worker_on(d+1).join(', ')}"
     end
-    puts format_calendar first_day_of_month, days
     nil
   end
 
@@ -125,6 +127,14 @@ class MiyauchiScheduler
 
   def working_days_for(worker)
     working_schedule.days_for(worker)
+  end
+
+  def working_days_with_spaces_for(worker)
+    result = Array.new(days)
+    working_days_for(worker).each do |d|
+      result[d-1] = d
+    end
+    result
   end
 
   def worker_per_day
