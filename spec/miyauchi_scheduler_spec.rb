@@ -102,7 +102,7 @@ describe MiyauchiScheduler do
 
   it 'should be able to print the schedule' do
     work_cal = subject.generate_calendar
-    expect(subject.print).to be nil
+    expect{subject.print}.to output.to_stdout
   end
 
   it 'should support japanese' do
