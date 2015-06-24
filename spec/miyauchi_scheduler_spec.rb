@@ -72,14 +72,17 @@ describe MiyauchiScheduler do
 
   1.times do
     it 'each worker should not work more than 5 days in a row (100 times)' do
-      pending
+      # ok this test should be somewhere else.
+      expect(Math.sum_up_to(5)).to eq(10)
+
+      max_days = 5
       cal = subject.generate_calendar
       subject.workers.each do |worker|
         days = cal.days_for(worker)
-        (days.size - 1).times do |i|
+        (days.size - max_days).times do |i|
           # x0 .. x4 + 1,2,3,4 = sum of continuous numbers.
-          continuous_sum = days[i] * 5 + 10
-          actual_sum = days[i..(i+5)].inject(0) { |t, x| t += x }
+          continuous_sum = days[i] * max_days + Math.sum_up_to(max_days)
+          actual_sum = days[i..(i+max_days)].inject(0) { |t, x| t += x }
           # if they are sorted and there is no duplicates, it can't possibly be the same for a non-continuous series.
           expect(actual_sum).not_to eq continuous_sum
         end
