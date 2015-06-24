@@ -145,5 +145,14 @@ describe MiyauchiScheduler do
     o = MiyauchiScheduler.new(current_year: 1969, current_month: 8)
     expect(o.send(:days)).to eq 31
   end
-end
 
+  it 'should be able to render it for any month' do
+    o = MiyauchiScheduler.new(current_year: 1969, current_month: 7)
+    o.set_workers ["宮内一美", "宮内琉嘉", "宮内美保子", "Mathieu Jobin"]
+    o.generate_calendar
+    expect(o.send(:days)).to eq 31
+    expect(o.send(:first_day_of_month)).to eq 2
+    o.print
+  end
+
+end
