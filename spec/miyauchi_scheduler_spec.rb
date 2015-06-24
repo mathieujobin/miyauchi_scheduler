@@ -111,5 +111,39 @@ describe MiyauchiScheduler do
     o.generate_calendar
     o.print
   end
+
+  it 'should be able to find the first day of the month properly' do
+    o = MiyauchiScheduler.new(current_year: 1969, current_month: 1)
+    expect(o.send(:first_day_of_month)).to eq 3
+    o = MiyauchiScheduler.new(current_year: 1969, current_month: 2)
+    expect(o.send(:first_day_of_month)).to eq 6
+    o = MiyauchiScheduler.new(current_year: 1969, current_month: 3)
+    expect(o.send(:first_day_of_month)).to eq 6
+    o = MiyauchiScheduler.new(current_year: 1969, current_month: 4)
+    expect(o.send(:first_day_of_month)).to eq 2
+    o = MiyauchiScheduler.new(current_year: 1969, current_month: 5)
+    expect(o.send(:first_day_of_month)).to eq 4
+    o = MiyauchiScheduler.new(current_year: 1969, current_month: 6)
+    expect(o.send(:first_day_of_month)).to eq 0
+    o = MiyauchiScheduler.new(current_year: 1969, current_month: 7)
+    expect(o.send(:first_day_of_month)).to eq 2
+  end
+
+  it 'should be able to find how many days there is properly' do
+    o = MiyauchiScheduler.new(current_year: 1969, current_month: 1)
+    expect(o.send(:days)).to eq 31
+    o = MiyauchiScheduler.new(current_year: 1969, current_month: 3)
+    expect(o.send(:days)).to eq 31
+    o = MiyauchiScheduler.new(current_year: 1969, current_month: 4)
+    expect(o.send(:days)).to eq 30
+    o = MiyauchiScheduler.new(current_year: 1969, current_month: 5)
+    expect(o.send(:days)).to eq 31
+    o = MiyauchiScheduler.new(current_year: 1969, current_month: 6)
+    expect(o.send(:days)).to eq 30
+    o = MiyauchiScheduler.new(current_year: 1969, current_month: 7)
+    expect(o.send(:days)).to eq 31
+    o = MiyauchiScheduler.new(current_year: 1969, current_month: 8)
+    expect(o.send(:days)).to eq 31
+  end
 end
 
