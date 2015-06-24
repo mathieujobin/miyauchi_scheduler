@@ -8,6 +8,6 @@ module Math
   end
 
   def self.sum_up_to(n)
-    n.times.inject(0) {|t, x| t+=x}
+    (n+1).times.inject(0) {|t, x| t+=x}
   end
 end
