@@ -26,8 +26,6 @@ class MiyauchiScheduler
     params[:available_workers]  ||= 4
     params[:days_off_per_month] ||= 8
     params[:days_off_per_year]  ||= 19
-    params[:current_year]       ||= current_year
-    params[:current_month]      ||= current_month
     @params = params
     @working_schedule = MiyauchiCalendar.new(days)
     reset_days_off
@@ -106,7 +104,7 @@ class MiyauchiScheduler
   attr_reader :params
 
   def first_day_of_month
-    Time.local(current_year, current_month, 1).day
+    Time.local(current_year, current_month, 1).wday
   end
 
   def days
@@ -146,11 +144,11 @@ class MiyauchiScheduler
   end
 
   def current_year
-    Time.now.strftime('%Y').to_i
+    params[:current_year] ||= Time.now.strftime('%Y').to_i
   end
 
   def current_month
-    Time.now.strftime('%m').to_i
+    params[:current_month] ||= Time.now.strftime('%m').to_i
   end
 
   def next_month
