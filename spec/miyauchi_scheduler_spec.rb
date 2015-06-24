@@ -28,17 +28,26 @@ describe MiyauchiScheduler do
 
   context 'when setting workers with different amount of working days' do
     100.times do
-      it 'should not schedule them for more than expected (100 times)' do
+      before do
         subject.add_worker "Hito 1", 20
         subject.add_worker "Hito 2", 20
         subject.add_worker "Hito 3", 11
         subject.add_worker "Hito 4", 11
-        work_cal = subject.generate_calendar
-        expect(work_cal.days_for("Hito 1").size).to be <= 20
-        expect(work_cal.days_for("Hito 2").size).to be <= 20
-        expect(work_cal.days_for("Hito 3").size).to be <= 11
-        expect(work_cal.days_for("Hito 4").size).to be <= 11
+        @work_cal = subject.generate_calendar
+      end
+      it 'should not schedule them for more than expected (100 times)' do
+        expect(@work_cal.days_for("Hito 1").size).to be <= 20
+        expect(@work_cal.days_for("Hito 2").size).to be <= 20
+        expect(@work_cal.days_for("Hito 3").size).to be <= 11
+        expect(@work_cal.days_for("Hito 4").size).to be <= 11
         subject.print if ENV['DEBUG']
+      end
+      it 'each days should contains valid workers' do
+        # trap no nils
+        subject.print #if ENV['DEBUG']
+        subject.working_schedule.days.each do |d, worker_names|
+          expect(worker_names - subject.workers).to be_empty
+        end
       end
     end
   end
