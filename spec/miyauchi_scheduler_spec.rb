@@ -30,16 +30,16 @@ describe MiyauchiScheduler do
     100.times do
       before do
         subject.add_worker "Hito 1", 20
-        subject.add_worker "Hito 2", 20
-        subject.add_worker "Hito 3", 11
-        subject.add_worker "Hito 4", 11
+        subject.add_worker "Hito 2", 21
+        subject.add_worker "Hito 3", 15
+        subject.add_worker "Hito 4", 15
         @work_cal = subject.generate_calendar
       end
       it 'should not schedule them for more than expected (100 times)' do
         expect(@work_cal.days_for("Hito 1").size).to be <= 20
-        expect(@work_cal.days_for("Hito 2").size).to be <= 20
-        expect(@work_cal.days_for("Hito 3").size).to be <= 11
-        expect(@work_cal.days_for("Hito 4").size).to be <= 11
+        expect(@work_cal.days_for("Hito 2").size).to be <= 21
+        expect(@work_cal.days_for("Hito 3").size).to be <= 15
+        expect(@work_cal.days_for("Hito 4").size).to be <= 15
         subject.print if ENV['DEBUG']
       end
       it 'each days should contains valid workers' do
