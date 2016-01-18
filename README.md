@@ -24,7 +24,15 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+horaire = MiyauchiScheduler.new
+horaire.add_worker "Joe", 22
+horaire.add_worker "Pete", 28
+horaire.add_worker "Jack", 16
+horaire.add_worker "Bob", 13
+cal = horaire.generate_calendar
+cal.print
+```
 
 ## Development
 
@@ -34,7 +42,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/miyauchi_scheduler. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/mathieujobin/miyauchi_scheduler. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License
