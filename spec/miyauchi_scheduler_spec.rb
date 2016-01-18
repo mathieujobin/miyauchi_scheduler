@@ -109,7 +109,7 @@ describe MiyauchiScheduler do
       work_cal = subject.generate_calendar
       subject.workers.each do |worker|
         days = work_cal.days_for(worker)
-        expect(days.size).to be <= 22
+        expect(days.size).to be <= (31-8)
       end
     end
   end
