@@ -1,20 +1,12 @@
 require "miyauchi_scheduler/version"
 require "miyauchi_calendar"
 
-DaysPerMonth = {
-  1 => 31,
-  2 => 29, # ouch, fix this
-  3 => 31,
-  4 => 30,
-  5 => 31,
-  6 => 30,
-  7 => 31,
-  8 => 31,
-  9 => 30,
-  10 => 31,
-  11 => 30,
-  12 => 31
-}
+COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+def days_in_month(month, year = Time.now.year)
+   return 29 if month == 2 && Date.gregorian_leap?(year)
+   COMMON_YEAR_DAYS_IN_MONTH[month]
+end
 
 class MiyauchiScheduler
 
@@ -92,18 +84,23 @@ class MiyauchiScheduler
   end
 
   def print
+    puts to_s
+  end
+
+  def to_s
+    out = []
     workers.each do |worker|
-      puts "================= Schedule ====================="
-      puts "Worker: #{worker} (Total working days: #{working_days_for(worker).size})"
-      puts "Working on: #{working_days_for(worker).join(', ')}"
-      puts "OFF on: #{days_off.days_for(worker)}"
-      puts format_calendar first_day_of_month, days, working_days_with_spaces_for(worker)
+      out << "================= Schedule ====================="
+      out << "Worker: #{worker} (Total working days: #{working_days_for(worker).size})"
+      out << "Working on: #{working_days_for(worker).join(', ')}"
+      out << "OFF on: #{days_off.days_for(worker)}"
+      out << format_calendar(first_day_of_month, days, working_days_with_spaces_for(worker))
     end
-    puts "================= per days ====================="
+    out << "================= per days ====================="
     days.times do |d|
-      puts "#{d+1}: #{working_schedule.worker_on(d+1).join(', ')}"
+      out << "#{d+1}: #{working_schedule.worker_on(d+1).join(', ')}"
     end
-    nil
+    out.join("\n")
   end
 
   def max_days_for(worker)
@@ -119,7 +116,7 @@ class MiyauchiScheduler
   end
 
   def days
-    DaysPerMonth[current_month]
+    days_in_month current_month
   end
 
   def random_worker
