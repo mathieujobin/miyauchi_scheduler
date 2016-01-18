@@ -1,4 +1,6 @@
 # MiyauchiScheduler
+[![Build Status](https://secure.travis-ci.org/mathieujobin/miyauchi_scheduler.png?branch=master)](http://travis-ci.org/mathieujobin/miyauchi_scheduler) [![Coverage Status](https://coveralls.io/repos/mathieujobin/miyauchi_scheduler/badge.png)](https://coveralls.io/r/mathieujobin/miyauchi_scheduler)
+
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/miyauchi_scheduler`. To experiment with that code, run `bin/console` for an interactive prompt.
 
