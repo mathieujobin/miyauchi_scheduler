@@ -106,6 +106,10 @@ class MiyauchiScheduler
     nil
   end
 
+  def max_days_for(worker)
+    @maxdays[worker] || (days-days_off_per_month)
+  end
+
   private
 
   attr_reader :params
@@ -125,10 +129,6 @@ class MiyauchiScheduler
 
   def has_no_more_working_days(worker)
     working_days_for(worker).size >= max_days_for(worker)
-  end
-
-  def max_days_for(worker)
-    @maxdays[worker] || (days-days_off_per_month)
   end
 
   def working_days_for(worker)

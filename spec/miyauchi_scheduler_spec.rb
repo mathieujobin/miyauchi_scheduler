@@ -20,10 +20,14 @@ describe MiyauchiScheduler do
 
   it 'should be able to set a list of workers with different maximum working days' do
     subject.add_worker "Hito 1", 22
-    subject.add_worker "Hito 2", 22
-    subject.add_worker "Hito 3", 13
+    subject.add_worker "Hito 2", 28
+    subject.add_worker "Hito 3", 16
     subject.add_worker "Hito 4", 13
     expect(subject.workers).to eq(["Hito 1", "Hito 2", "Hito 3", "Hito 4"])
+    expect(subject.max_days_for("Hito 1")).to eq 22
+    expect(subject.max_days_for("Hito 2")).to eq 28
+    expect(subject.max_days_for("Hito 3")).to eq 16
+    expect(subject.max_days_for("Hito 4")).to eq 13
   end
 
   context 'when setting workers with different amount of working days' do
