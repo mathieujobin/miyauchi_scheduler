@@ -41,6 +41,8 @@ class MiyauchiScheduler
       while days_off.days_for(worker).size < days_off_per_month
         day = (rand * days).to_i + 1
         if worker_per_day <= (available_workers - days_off.worker_on(day).size)
+          puts "Adding a day off to #{worker} on #{day}" if ENV['DEBUG']
+          raise if worker.to_s.empty?
           days_off.add_worker(worker, day)
         end
       end
@@ -54,6 +56,8 @@ class MiyauchiScheduler
       while working_schedule.worker_on(d+1).size < worker_per_day
         name = random_workers.pop
         unless has_no_more_working_days(name)
+          puts "Worker #{name} set to work on #{d+1}" if ENV['DEBUG']
+          raise if name.to_s.empty?
           working_schedule.add_worker(name, d+1)
         end
       end

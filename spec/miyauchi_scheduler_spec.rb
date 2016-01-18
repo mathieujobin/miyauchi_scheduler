@@ -44,8 +44,9 @@ describe MiyauchiScheduler do
       end
       it 'each days should contains valid workers' do
         # trap no nils
-        subject.print #if ENV['DEBUG']
+        subject.print if ENV['DEBUG']
         subject.working_schedule.days.each do |d, worker_names|
+          #debugger unless (worker_names - subject.workers).empty?
           expect(worker_names - subject.workers).to be_empty
         end
       end
