@@ -28,6 +28,8 @@ describe MiyauchiScheduler do
     expect(subject.max_days_for("Hito 2")).to eq 28
     expect(subject.max_days_for("Hito 3")).to eq 16
     expect(subject.max_days_for("Hito 4")).to eq 13
+    @work_cal = subject.generate_calendar
+    expect(subject.workers).to eq(["Hito 1", "Hito 2", "Hito 3", "Hito 4"])
   end
 
   context 'when setting workers with different amount of working days' do
