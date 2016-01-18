@@ -44,7 +44,11 @@ class MiyauchiScheduler
   def generate_calendar
     generate_or_setup_days_off
     days.times do |d|
-      random_workers = workers.shuffle
+      random_workers = workers.shuffle.select{|name| !has_no_more_working_days(name) }
+      if random_workers.size < worker_per_day
+        print
+        raise "not enough workers for day #{d+1}, needed #{worker_per_day}"
+      end
       while working_schedule.worker_on(d+1).size < worker_per_day
         name = random_workers.pop
         unless has_no_more_working_days(name)
